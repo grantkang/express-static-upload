@@ -3,24 +3,23 @@ import { Input, Button } from '@material-ui/core';
 import AppContext from '../lib/context';
 
 export default function UploadForm(props) {
-  const [file, setFile] = React.useState({});
   const context = React.useContext(AppContext);
-
-  const handleChange = e => {
-    const target = e.target;
-    setFile(target.value);
-  };
 
   const handleSubmit = e => {
     e.preventDefault();
-    context.uploadFile(file);
+    const file = e.target.elements.file.files[0];
+    if (file) {
+      const data = new FormData();
+      data.append('file', file);
+      context.uploadFile(data);
+    }
     e.target.reset();
   };
 
   return (
     <React.Fragment>
-      <form onSubmit={handleSubmit}>
-        <Input type="file" onChange={handleChange} inputProps={{ accept: 'image/png, image/jpeg' }} />
+      <form encType="multipart/form-data" onSubmit={handleSubmit}>
+        <Input name="file" type="file" inputProps={{ accept: 'image/png, image/jpeg' }} />
         <Button color="primary" variant="contained" type="submit">Upload File</Button>
       </form>
     </React.Fragment>

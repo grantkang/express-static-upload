@@ -1,13 +1,20 @@
 import React from 'react';
 import { Typography, Container } from '@material-ui/core';
+import axios from 'axios';
 
 import AppContext from '../lib/context';
 import UploadForm from './upload-form';
 
 export default function App(props) {
 
-  const uploadFile = file => {
-    // Call backend
+  const uploadFile = data => {
+    axios.post('/api/upload',
+      data,
+      { headers: { 'Content-type': 'multipart/form-data' } })
+      .then(response => {
+        // eslint-disable-next-line no-console
+        console.log(response);
+      });
   };
 
   const contextValue = {
