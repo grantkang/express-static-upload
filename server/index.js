@@ -1,5 +1,6 @@
 
 require('dotenv/config');
+const fs = require('fs');
 const express = require('express');
 const multer = require('multer');
 const ClientError = require('./client-error');
@@ -21,6 +22,11 @@ app.post('/api/upload', upload, (req, res, next) => {
   const file = req.file;
   if (!file) return next(new ClientError('No file provided', 400));
   res.status(201).send({ message: 'File successfully uploaded' });
+});
+
+app.get('/api/gallery', (req, res, next) => {
+  const files = fs.readdirSync('server/public/uploads', 'binary').filter(file => file !== '.gitignore');
+  res.status(200).send(files);
 });
 
 app.use('/api', (req, res, next) => {
