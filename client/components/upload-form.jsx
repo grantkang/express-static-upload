@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Button } from '@material-ui/core';
+import { Input, Button, Box } from '@material-ui/core';
 import AppContext from '../lib/context';
 
 export default function UploadForm(props) {
@@ -19,8 +19,10 @@ export default function UploadForm(props) {
   return (
     <React.Fragment>
       <form encType="multipart/form-data" onSubmit={handleSubmit}>
-        <Input name="file" type="file" inputProps={{ accept: 'image/png, image/jpeg' }} />
-        <Button color="primary" variant="contained" type="submit">Upload File</Button>
+        <Box display="flex" justifyContent="center">
+          <Input name="file" type="file" inputProps={{ accept: 'image/png, image/jpeg' }} />
+          <Button color="primary" variant="contained" type="submit">Upload File</Button>
+        </Box>
       </form>
     </React.Fragment>
   );
