@@ -4,16 +4,28 @@ import axios from 'axios';
 
 import AppContext from '../lib/context';
 import UploadForm from './upload-form';
+import Gallery from './gallery';
 
 export default function App(props) {
+  const [images, setImages] = React.useState([]);
+
+  React.useEffect(() => {
+    fetchImages();
+  }, []);
 
   const uploadFile = data => {
     axios.post('/api/upload',
       data,
       { headers: { 'Content-type': 'multipart/form-data' } })
       .then(response => {
-        // eslint-disable-next-line no-console
-        console.log(response);
+        fetchImages();
+      });
+  };
+
+  const fetchImages = () => {
+    axios.get('/api/gallery')
+      .then(response => {
+        setImages(response.data);
       });
   };
 
@@ -26,8 +38,8 @@ export default function App(props) {
       <Container maxWidth="md">
         <Typography variant="h3" align="center">Express Static Upload</Typography>
         <UploadForm />
+        <Gallery images={images} />
       </Container>
     </AppContext.Provider>
-
   );
 }
